@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Check if the number of arguments is less than 4
+if [ "$#" -lt 4 ]; then
+  echo "Usage: 0-transfer_file PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
+  exit 1
+fi
+
+# Assign variables
+FILE=$1
+SERVER_IP=$2
+USERNAME=$3
+SSH_KEY=$4
+
+# If file doesn't exist, create a dummy one
+if [ ! -f "$FILE" ]; then
+  echo "<html><body><h1>Test Page</h1></body></html>" > "$FILE"
+  echo "[$FILE] did not exist, so a test file was created."
+fi
+
+# Transfer file to remote home directory
+scp -i "$SSH_KEY" -o StrictHostKeyChecking=no "$FILE" "$USERNAME@$SERVER_IP:~/"
+
+# Check if transfer was successful
+if [ $? -eq 0 ]; then
+  echo "File [$FILE] successfully transferred to $USERNAME@$SERVER_IP:~/"
+else
+  echo "Failed to transfer file."
+fi
