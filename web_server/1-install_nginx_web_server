@@ -5,9 +5,10 @@ apt-get update -y
 #install nginx silently
 
 apt-get install nginx -y
+sudo ufw allow 'Nginx HTTP'
 
 #create html content
-echo "<html><head></head><body>Holberton School for the win!</body></html>" > /var/www/html/index.html
+sh -c 'echo "Holberton School" > /var/www/html/index.html'
 
 # Restart nginx using service(not systemctl)
 service nginx restart
