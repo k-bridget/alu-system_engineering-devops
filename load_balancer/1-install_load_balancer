@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 # Create a script to install and configure HAProxy on lb-01 server
 # Configure HAProxy to send traffic to web-01 and web-02 servers
@@ -15,17 +16,17 @@ sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.bak
 # sudo truncate -s 0 /etc/haproxy/haproxy.cfg
 
 # Check if the configuration for frontend and backend exists
-if ! grep -q "frontend kessy-frontend" /etc/haproxy/haproxy.cfg; then
+if ! grep -q "frontend Bree-frontend" /etc/haproxy/haproxy.cfg; then
     # Add frontend and backend configuration
-    server_config="frontend kessy-frontend
+    server_config="frontend Bree-frontend
         bind *:80
         mode http
-        default_backend kessy-backend
+        default_backend Bree-backend
 
-    backend kessy-backend
+    backend Bree-backend
         balance roundrobin
-        server 6310-web-01 100.27.18.104:80 check
-        server 6310-web-02 54.87.181.179:80 check"
+        server 6638-web-01 check
+        server 6638-web-02 check"
     
     # Append the configuration to haproxy.cfg
     echo "$server_config" | sudo tee -a /etc/haproxy/haproxy.cfg
@@ -47,3 +48,4 @@ echo "Checking HAProxy configuration..."
 curl -Is http://localhost | grep X-Served-By
 
 echo "HAProxy installation and configuration complete. Traffic is now load balanced between web-01 and web-02."i
+
